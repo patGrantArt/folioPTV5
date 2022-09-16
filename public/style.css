@@ -1,0 +1,123 @@
+
+/* This is a single-line comment */
+:root {
+    --darkBrown: rgb(58, 30, 10);
+    --medBrown: rgb(85, 62, 45);
+    --red: coral;
+    --lightRed: rgb(250, 174, 147);
+    --medRed: rgb(245, 150, 115);
+    --darkRed: rgb(198, 53, 0);
+    --lightGrey: rgb(179, 158, 150);
+    --lighterGrey: rgb(224, 195, 183);
+    --cream:  rgb(252, 239, 184);
+}
+
+
+body {
+    background-color: var(--red);
+    position:absolute;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0px;
+    left: 0px;
+    top:0px;
+}
+#bodyContainer {
+    margin: 10% 5% 10% 5%;
+    width: 90%;
+    max-width: 900px;
+
+} 
+#mainContainer {
+    background-color: var(--cream);
+    width: 100%;
+    min-height: 600px;
+    border-radius: 2vw;
+    padding: 4%;
+
+}
+
+
+
+/* UPDATE BUTTON */
+
+#updateLog {
+    font-size: 0.8em;
+    color: var(--lightGrey);
+
+}
+
+
+/* CARD STYLING */
+.card{
+    background-color: var(--lightRed);
+    width: 20%;
+    margin: 2%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 2%;
+    cursor: pointer;
+    color: var(--darkBrown);
+    position: relative;
+    float: left;
+}
+.card:hover {
+    background-color: var(--medRed);
+    color: var(--medBrown);
+}
+.card:hover .portrait{
+    opacity: 70%;
+    }
+
+.cardTitle {
+    font-weight: bold;
+    text-align: center;
+    padding: 2% 0% 4% 0;
+}
+.portrait {
+    width: 100%;
+    width: 100%;
+    margin: 0;
+    box-shadow: none;
+}
+.tag {
+    background-color: var(--medRed);
+    color: var(--cream);
+    font-size: 0.6rem;
+    width: fit-content;
+    padding: 2px 9px 2px 9px;
+    border-radius: 6px;
+    margin: 5px;
+    
+}
+.Stub {
+
+}
+
+
+/* Boilerplatet */ 
+
+.break {
+    clear: both;
+}
+p {
+	margin: 0;
+}
+a {
+	text-decoration: underline;
+	font-weight: bold;	
+}
+a:hover {
+	text-decoration: underline;
+	font-weight: bold;
+}
+a img {
+	border:medium none;
+}
+ul{
+	padding: 0px;
+	margin: 0px;
+    list-style-type: none;
+}
+/* Utilities */
+.noShow {visibility: hidden;}
+.show {visibility: visible;}  
