@@ -13,7 +13,7 @@ function init(){
 
 async function getData(instruction){
     console.log(`==== getData() is called with "${instruction}" argument`)
-    let route = "http://localhost:3000/"+instruction;
+    let route = "/"+instruction;
     myResponse = await fetch(route);
     console.log(myResponse)
     data = await myResponse.json();
@@ -24,7 +24,7 @@ async function updateData(event){
     console.log(`update data is called with instructions to: ${event.target.name}`)
     //get route information from the user event
     let instruction = event.target.name
-    let route = "http://localhost:3000/"+instruction;
+    let route = "/"+instruction;
     //send fetch request
     let newStream = await fetch(route);
     //console.log(newStream)
