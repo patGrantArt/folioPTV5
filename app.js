@@ -1,13 +1,13 @@
 
 
 //FOLIO BUG FIXES
-//long read - italics 
-//long read line breaks
-//fix timestamp bug
-//add autorefresh to update from airtable function
+
 // undefined showing up in empty title and pull quote boxes
 // create function to handle pull quotes
-//longread
+//fix timestamp bug
+//add autorefresh to update from airtable function
+//add tidy text to pull quotes and titles.
+//add big parentheses to pull quotes
 //Set up git hub procedures
 //Set up heroku deployment procedures
 
@@ -17,7 +17,7 @@
 //SERVER - express.js basic server setup 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 5000
 
 //FILe HANDLING
 const fs = require('fs')
