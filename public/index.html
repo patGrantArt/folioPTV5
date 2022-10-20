@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Folio Prototype V5</title>
     <script src="initialise.js"></script>
+    <script src="buildLog.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="longRead.css">
 </head>
@@ -31,14 +32,24 @@
     <div id="bodyContainer">        
         <div id = "title"><h1>FOLIO DEV DASH</h1></div>
         <div id="mainContainer">
-            <button id="updateButton" name="update">UPDATE FROM AIRTABLE</button>
-            <p id="updateLog">No update information is available</p>
-            
-            
-            
-            <div id = "CardContainer">  
+            <div id = "CardContainer" class = "grid-card-container"> 
+                <div class = "title"><h1>INTERVIEWS</h1></div> 
             </div>
-            <div id = "content"></div>
+            <br clear="all" />
+            <div id = "updateContainer" class = "grid-card-container">
+                <div id = "data-update-widget" class = "widget">
+                    <div class = "title"><h1>DATA UPDATES</h1></div>
+                    <button id="updateButton" name="update" class = "important-button">GO GET NEWEST DATA FROM AIRTABLE</button>
+                    <div id="updateLog" class = "widget-copy">
+                        <p></p>No update information is available</p>
+                    </div>    
+                </div>
+                <div id = "buildLog" class="widget">
+                        <div class = "title"><h1>SITE UPDATES</h1></div>
+                </div>
+                    
+                    
+            </div>
         </div>
     </div>    
 </body>

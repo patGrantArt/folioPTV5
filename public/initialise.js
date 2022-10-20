@@ -8,9 +8,10 @@ function init(){
     console.log("initialising...")
     console.log(`getting data`)
     getData('local');
+    updateBuildLog();
+    initEventListeners();
 }
     
-
 async function getData(instruction){
     console.log(`==== getData() is called with "${instruction}" argument`)
     let route = "/"+instruction;
@@ -31,19 +32,17 @@ async function updateData(event){
     let responseString = await newStream.text();
     console.log("response recieved:")
     document.getElementById("updateLog").innerText = responseString;
+    getData("local");
     publish(data); 
 }
 
 function publish(object){
     console.log(`==== publishing data`)
-    //give object a name
     dataSet = object;
-    //console.log(dataSet);
     let longFormCards = dataSet.lf_Cards
-    //console.log(longFormCards)
     //clear existing cards
     let cardContainer = document.getElementById("CardContainer")
-    cardContainer.innerHTML = '';
+    cardContainer.innerHTML = "";
     longFormCards.forEach((card)=>{
         //console.log(`publishing card ${card.id}`);
         //create card element
@@ -86,8 +85,12 @@ function publish(object){
         //append to container
         cardContainer.appendChild(thisCard); 
     })
-    //document.getElementById("mainContainer").appendChild(cardContainer);
+    //update Timestamp on the Update Log
+    document.getElementById("updateLog").innerText = dataSet.timeStamp;
 };
+function initEventListeners(){
+    console.log("no event listeners to initialise")
+}
 
 function loadInterview(idString){
     console.log(`retrieving the right interview data for ${idString}`)
@@ -150,6 +153,8 @@ function closeLongForm(){
     let page = document.getElementById("longRead-content"); 
     page.innerHTML = '';
 }
+
+
 //this function parses Airtables variation on the Markdown language - Based on Randolph Perkins' medium post
 function tidyMyCopy(longString){
     console.log(`tidying the copy - Parsing markdown to html`);

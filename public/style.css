@@ -10,7 +10,16 @@
     --lightGrey: rgb(179, 158, 150);
     --lighterGrey: rgb(224, 195, 183);
     --cream:  rgb(252, 239, 184);
+    --lighterCream:  rgb(250, 242, 208);
+    --lightestCream:  rgb(254, 251, 237);
 }
+
+
+/* ===================================================== */
+/* ================== SMALL PHONE (default) ============ */
+/* ===================================================== */
+
+/* Main Page Styling */
 
 
 body {
@@ -23,42 +32,104 @@ body {
     top:0px;
 }
 #bodyContainer {
-    margin: 10% 5% 10% 5%;
-    width: 90%;
+    margin: 0% 0% 0% 0%;
+    width: 100%;
     max-width: 900px;
 
 } 
 #mainContainer {
     background-color: var(--cream);
-    width: 100%;
+    width: 101%;
     min-height: 600px;
-    border-radius: 2vw;
-    padding: 4%;
+    border-radius: 0vw;
+    padding: 0% 0 10% 0;
 
 }
+#updateContainer {
+    margin: 5%;
 
+}
+.grid-card-container {
+    width: 88%;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0px 3% 0 5%;
+    padding: 1rem 0 0 0;
+}
+.grid-col-2-row-1 {
+    grid-column: span 2;
+}
+.grid-col-3-row-1 {
+    grid-column: span 3;
+}
+#title {
+    width: 80%;
+    margin: 6%;
+}
 
+/* Widget Styling */
 
-/* UPDATE BUTTON */
-
-#updateLog {
+.widget {
+    background-color: var(--lightGrey);
+    border-radius: 1rem;
+    padding: 5%;
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    color: var(--lightestCream);
+    min-height: 200px;
+    margin: 5% 0 0 0;
+    grid-column: span 2;
+}
+.widget h1 { 
+    color: var(--darkBrown);
+    margin: 1% 0 3% 0;
+};
+.widget p {
     font-size: 0.8em;
     color: var(--lightGrey);
-
+}
+.widget-copy {
+    padding: 0% 5% 0% 5%;
+}
+.log-grid-container {
+        width: 88%;
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: repeat(3, 1fr);
+        margin: 0px 0% 0 0%;
+        padding: 0 0 0 0;
+}
+.important-button {
+    width: 100%;
+    height: 3rem;
+    border-radius: 1rem;
+    border: 3px solid var(--darkRed);
+    cursor: pointer;
+    margin: 1% 0 3% 0;
+    background-color: var(--lightRed);
+}
+.important-button:hover {
+    opacity: 70%;
+}
+.buildLogRow {
+    width: 100%;
+    min-height: 60px;
+    padding: 1%;
+    height: fit-content;
+}
+.widget li {
+    margin: 0 0 15px 0;
 }
 
 
 /* CARD STYLING */
-.card{
+ .card{
     background-color: var(--lightRed);
-    width: 20%;
-    margin: 2%;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 100%;
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
     border-radius: 2%;
     cursor: pointer;
     color: var(--darkBrown);
-    position: relative;
-    float: left;
 }
 .card:hover {
     background-color: var(--medRed);
@@ -110,6 +181,9 @@ a:hover {
 	text-decoration: underline;
 	font-weight: bold;
 }
+img {
+    width: 100%
+}
 a img {
 	border:medium none;
 }
@@ -121,3 +195,31 @@ ul{
 /* Utilities */
 .noShow {visibility: hidden;}
 .show {visibility: visible;}  
+
+
+/* ===================================================== */
+/* ===================== LARGE PHONE =================== */
+/* ===================================================== */
+
+@media screen and (min-width: 576px){
+
+
+}
+
+/* ===================================================== */
+/* ===================== TABLET ======================== */
+/* ===================================================== */
+
+@media screen and (min-width: 768px){
+    #mainContainer {
+        width: 90%;
+        border-radius: 1rem;
+        padding: 3% 0 3% 0;
+        margin: 0 5% 7% 5%;
+    }
+    
+    
+    .grid-card-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

@@ -17,7 +17,7 @@
 //SERVER - express.js basic server setup 
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 3000
 
 //FILe HANDLING
 const fs = require('fs')
