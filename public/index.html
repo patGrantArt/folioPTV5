@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="longRead.css">
 </head>
-<body onload=init()>
+<body onload=listen()>
     <div id = "longRead-modal" class = "longRead-modal noShow">
         <div id = "longRead-escape" class = "longRead-escape">
             <div id="longRead-escapeButton" class = "longRead-escapeButton" onclick=closeLongForm()>
@@ -30,22 +30,45 @@
         </div>    
     </div>
     <div id="bodyContainer">        
-        <div id = "title"><h1>FOLIO DEV DASH</h1></div>
-        <div id="mainContainer">
-            <div id = "CardContainer" class = "grid-card-container"> 
-                <div class = "title"><h1>INTERVIEWS</h1></div> 
+        <div id = "title"><h1>FOLIO DEVELOPMENT DASHBOARD</h1></div>
+        <!-- Password to Activate  -->
+        <div id = "pwInputBox" class ='pw-input-box'>
+            <label id="pwLabel">Ask to be let in...</label>
+            <input id="pwInput"></input>
+            <!-- <button id="pwButton" class = "important-button">Go!</button> -->
+        </div>
+        <div id="mainContainer" class = "noShow">
+            <div class = "title"><h1>INTERVIEWS</h1></div> 
+            <div id = "CardContainer" class = "grid-card-container">               
+            </div>
+            <div class = "title"><h1>PEOPLE - EVENTS - INSTITUTIONS</h1></div>
+            <div id= "entitiesContainer" class = "grid-card-container-small"> 
+
+            </div>
+            <div class = "title"><h1>STORIES</h1></div> 
+            <div id= "storiesContainer" class = "grid-card-container-small"> 
+
+            </div>
+            <div class = "title"><h1>PUBLICATIONS</h1></div> 
+            <div id= "pubsContainer" class = "grid-card-container-small"> 
+
             </div>
             <br clear="all" />
             <div id = "updateContainer" class = "grid-card-container">
-                <div id = "data-update-widget" class = "widget">
+                <div id = "data-update-widget" class = "widget grid-row-1 grid-col-2">
                     <div class = "title"><h1>DATA UPDATES</h1></div>
                     <button id="updateButton" name="update" class = "important-button">GO GET NEWEST DATA FROM AIRTABLE</button>
                     <div id="updateLog" class = "widget-copy">
                         <p></p>No update information is available</p>
                     </div>    
                 </div>
-                <div id = "buildLog" class="widget">
+                <div id = "buildLog" class="widget grid-row-3 grid-col-2">
                         <div class = "title"><h1>SITE UPDATES</h1></div>
+                </div>
+                <div id = "workflow" class="widget grid-row-1 grid-col-2">
+                    <a href="https://docs.google.com/spreadsheets/d/1dJ9ZwcaUKAtNMwD3EHLur4qe2U5juLskoxzZf9iKLmA/edit?usp=sharing"><img src="images/widget_image.png"/></a>
+                    <div class = "title"><h1>WORKFLOW SHEET</h1></div>
+                    <a href="https://docs.google.com/spreadsheets/d/1dJ9ZwcaUKAtNMwD3EHLur4qe2U5juLskoxzZf9iKLmA/edit?usp=sharing">GO TO THE SHEET</a>
                 </div>
                     
                     
@@ -55,7 +78,6 @@
 </body>
 <footer>
     <script>
-        document.getElementById('updateButton').addEventListener('click', updateData)
     </script>
 
 </footer>

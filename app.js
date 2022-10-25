@@ -49,6 +49,15 @@ async function goGetFromAirtable(){
     }).catch(err => {
         console.error(err)
     })
+    // Pull data from the entities sheet
+    const entitiesData = await base("tblnomwPwSdSEjT5H")
+    .select({view: "Grid view"})
+    .all()
+    .then(records => {
+        return records
+    }).catch(err => {
+        console.error(err)
+    });
     // Pull data from the long form page
     const longFormData = await base('tblsUOsUd5CEtbHNY')
     .select({view: "Grid view"})
@@ -61,6 +70,7 @@ async function goGetFromAirtable(){
     let result = new Object;
     result.timeStamp = `last update from Airtable made at ${new Date}`;
     result.lfcards = cardsData;
+    result.entcards = entitiesData;
     result.lfcopy = longFormData;
     return result;
 }
@@ -100,6 +110,21 @@ function sortData(object){
         thisCard.fields = element.fields
         result.lf_Cards.push(thisCard);
     });
+    //sort entity cards
+    console.log('==========');
+    //console.log(object.entcards);
+    result.ent_Cards = [];
+    object.entcards.forEach(element => {
+        let cardID = element.fields.ID;
+        let thisCard = new Object;
+        thisCard.id = cardID;
+        thisCard.fields = element.fields
+        result.ent_Cards.push(thisCard);
+    });
+    console.log('==========');
+
+    //sort 
+
     //sort long form interviews
     result.lf_copy = [];
     lfintArray = object.lfcopy;
@@ -110,7 +135,7 @@ function sortData(object){
         thisCard.fields = element.fields
         result.lf_copy.push(thisCard);
     });
-    console.log(`returning result Object: ${result}`)
+    //console.log(`returning result Object: ${result}`)
     return result
 }
 
