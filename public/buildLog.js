@@ -1,18 +1,33 @@
 let BuildLogObj = [
+    // {
+    //     date: "UNDEPLOYED",
+    //     updates: [
+    //         "TO DO: refactor code in long form module.",
+
+    //         "TO DO: create 'examine' funtionality"
+    //         ]    
+    // },
     {
-        date: "NEXT BUILD",
+        date: "28-10-22",
+        updates: [
+            "FIX BUG: manage UNDEFINED in card loop",
+            "LAYOUT: better use of grid layout",
+            "NEW CARDS: CSS Make everything smaller and gentler",
+            "BACK END: Added publications sheet",
+            "NEW THING: Images in long form article enabled"
+            ]    
+    },
+    {
+        date: "25-10-22",
         updates: [
             "NEW THING: very basic password barrier for live site.",
-            "TO DO: Create placeholder images for events, stories, etc",
             "LAYOUT: Make cream box centre aligned on big screen with FLEX.",
-            "TO DO: manage UNDEFINED in card loop",
-            "TO DO: CSS Make everything smaller and gentler",
             "LAYOUT: tweaked grid on dev widgets",
             "ADDED: workflow link widget"
             ]    
     },
     {
-    date: "THURSDAY 20-10-22",
+    date: "20-10-22",
     updates: [
         "NEW THING: This 'site update' widget tracks changes to most recent build.",
         "FIXED: 'Update from airtable' button now refreshes visible content automatically.",

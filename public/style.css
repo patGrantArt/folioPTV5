@@ -28,7 +28,7 @@ body {
     width: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-content: center;
     justify-content: center;
     margin: 0px;
@@ -45,7 +45,7 @@ body {
     width: 101%;
     min-height: 600px;
     border-radius: 0vw;
-    padding: 0% 0 10% 0;
+    padding: 0.3rem 0 10% 0;
 
 }
 #updateContainer {
@@ -55,7 +55,7 @@ body {
 .grid-card-container {
     width: 88%;
     display: grid;
-    gap: 1.5rem;
+    gap: 1.0rem;
     grid-template-columns: repeat(2, 1fr);
     margin: 0px 3% 0 5%;
     padding: 1rem 0 0 0;
@@ -63,20 +63,25 @@ body {
 .grid-card-container-small {
     width: 88%;
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
     margin: 0px 3% 0 5%;
     padding: 1rem 0 0 0;
 }
 #title {
-    width: 80%;
-    margin: 6%;
+    width: 90%;
+    margin: 5%;
+    text-align: center;
 }
 
-
 /* Type utilites */
+h1 {
+    font-size: 1.2rem;
+}
 .title h1 {
-    margin: 2rem 0 0.5rem 5%
+    font-size: 1.2rem;
+    margin: 2rem 5% 0.5rem 5%;
+    width: 80%;
 }
 
 
@@ -166,6 +171,7 @@ body {
     border-radius: 2%;
     cursor: pointer;
     color: var(--darkBrown);
+    
 }
 .card:hover {
     background-color: var(--medRed);
@@ -173,12 +179,38 @@ body {
 }
 .card:hover .portrait{
     opacity: 70%;
-    }
+}
+.card-med {
 
-.cardTitle {
+}
+.card-med h1 {
+    font-weight: bold;
+    padding: 2% 0% 4% 0;
+    font-size: 0.8rem;
+    margin: 0 5% 0px 10%;
+    text-align: left;
+}
+.card-small {
+    border-radius: 10px 10px 0px 0px
+
+}
+.card-small h1 {
+    font-size: 0.6rem;
     font-weight: bold;
     text-align: center;
-    padding: 2% 0% 4% 0;
+    padding: 0% 5% 0% 5%;
+
+}
+.card-focus {
+    grid-row: span 4;
+    grid-column: span 3;
+}
+.card-focus h1 {
+    font-size: 0.6rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0% 5% 0% 5%;
+
 }
 .portrait {
     width: 100%;
@@ -199,15 +231,30 @@ body {
 .Stub {
 
 }
+.card-typeTab{
+    height: 1.3rem;
+    width: 100%;
+    background-color: var(--darkBrown);
+    color: var(--lightestCream);
+    border-radius: 10px 10px 0px 0px
+}
+.card-typeTab p {
+    padding: 2% 0 1% 5%;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.type-anthology {
+
+}
 
 
 /* password */
 
 .pw-input-box {
-
     background-color: black;
-    width: 30%;
-    margin: 0 25% 0 25%;
+    width: 60%;
+    margin: 3rem 7% 0 7%;
     height: 8rem;
     border-radius: 1.5rem;
     color: var(--lightestCream);
@@ -288,6 +335,13 @@ ul{
 /* ===================================================== */
 
 @media screen and (min-width: 768px){
+    body{
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+    }
+    
+    
     #mainContainer {
         width: 90%;
         border-radius: 1rem;
@@ -298,8 +352,16 @@ ul{
     
     .grid-card-container {
         grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
     }
     .grid-card-container-small {
         grid-template-columns: repeat(6, 1fr);
+    }
+    .pw-input-box {
+        width: 30%;
+        margin: 3rem 25% 0 25%;
+        height: 8rem;
+        border-radius: 1.5rem;
+        padding: 2rem 10% 2rem 10%;
     }
 }

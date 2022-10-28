@@ -67,11 +67,23 @@ async function goGetFromAirtable(){
     }).catch(err => {
         console.error(err)
     });
+    //pull data from the publications page
+    const publicationsData = await base('tblPEQ1zjLWdGDneK')
+    .select({view: "Grid view"})
+    .all()
+    .then(records => {
+        return records
+    }).catch(err => {
+        console.error(err)
+    });
+
+    //assemble the data into a coherent object
     let result = new Object;
     result.timeStamp = `last update from Airtable made at ${new Date}`;
     result.lfcards = cardsData;
     result.entcards = entitiesData;
-    result.lfcopy = longFormData;
+    result.storycards = longFormData;
+    result.publicationcards = publicationsData;
     return result;
 }
 
@@ -121,22 +133,34 @@ function sortData(object){
         thisCard.fields = element.fields
         result.ent_Cards.push(thisCard);
     });
-    console.log('==========');
 
-    //sort 
-
-    //sort long form interviews
-    result.lf_copy = [];
-    lfintArray = object.lfcopy;
-    lfintArray.forEach(element => {
+    //sort story cards
+    result.stories = [];
+    stintArray = object.storycards;
+    stintArray.forEach(element => {
         let cardID = element.fields.id;
         let thisCard = new Object;
         thisCard.id = cardID;
         thisCard.fields = element.fields
-        result.lf_copy.push(thisCard);
+        result.stories.push(thisCard);
     });
+
+    //sort publications list
+    result.publications = [];
+    console.log(`=====================`);
+    console.log(object.publicationcards);
+    let pubsArray = object.publicationcards
+    console.log(pubsArray);
+    pubsArray.forEach( card => {
+        let cardID = card.fields.id;
+        let thisCard = new Object;
+        thisCard.id = cardID;
+        thisCard.fields = card.fields;
+        result.publications.push(thisCard);
+    })
+
     //console.log(`returning result Object: ${result}`)
-    return result
+    return result    
 }
 
 //ROUTES and ROUTE HANDLING

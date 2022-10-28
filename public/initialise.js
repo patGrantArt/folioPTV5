@@ -2,6 +2,9 @@ console.log(`What up folio`);
 
 //Global variables accessed by all functions
 let data;
+//pass word disable for devs
+let pwDisable = true;
+
 
 // higher order function initalises data and display
 function init(){
@@ -18,13 +21,14 @@ function listen(){
         if(e.key==="Enter"){pwAuthenticate()};
     });        
     document.getElementById('updateButton').addEventListener('click', updateData)
+    //password disabler
+    pwDisable ? pwAuthenticate(): null;
 }  
-
 function pwAuthenticate(){
     let pwString = document.getElementById('pwInput').value;
     console.log(`Authenticating with: `+pwString);
     // here's where we make a http request to the server so we can hide the PW in a more sophisticated version
-    if (pwString === "let me in") {                         
+    if (pwString === "let me in" || pwDisable) {                         
         document.getElementById('pwLabel').innerText = "Hooray!";
         document.getElementById('pwLabel').classList = "greenType";
         //function to be called after timeout
@@ -32,6 +36,7 @@ function pwAuthenticate(){
             // === this is important higher order function called === 
             init();
             document.getElementById("pwInputBox").classList.add("noShow")
+            document.getElementById("title").classList.replace("noShow", "show")
             document.getElementById("mainContainer").classList.replace("noShow", "show")
         };
         setTimeout(()=> pwTimey(), 1000);
@@ -49,8 +54,6 @@ function pwAuthenticate(){
     }
 
 };    
-
-
 
 async function getData(instruction){
     console.log(`==== getData() is called with "${instruction}" argument`)
@@ -92,6 +95,7 @@ function publish(object){
         thisCard.id = card.fields.ID;
         thisCard.classList = "card"
         thisCard.classList.add(idArray[0]);
+        thisCard.classList.add("card-med");
         thisCard.setAttribute("onclick","loadInterview(this.id);");
         //handle image
         let imagePath;
@@ -108,9 +112,8 @@ function publish(object){
         thisImage.setAttribute("src",imagePath);
         thisCard.appendChild(thisImage)
         //handle header
-        let thisTitle = document.createElement('p');
+        let thisTitle = document.createElement('h1');
         thisTitle.innerText = card.fields.title;
-        thisTitle.classList = "cardTitle";
         thisCard.appendChild(thisTitle) 
         //handle status tag
         let thisTag = document.createElement('p');
@@ -137,9 +140,18 @@ function publish(object){
         //console.table(card.fields);
         let thisCard = document.createElement("div")
         thisCard.id = card.fields.ID;
-        thisCard.classList = "card"
+        thisCard.classList = "card card-small"
         thisCard.classList.add(idArray[0]);
         thisCard.setAttribute("onclick","loadInterview(this.id);");
+        //create card type tab
+        console.table(card.fields);
+        let thisTab = document.createElement('div');
+        console.log(card.fields.cardType[0])
+        thisTab.classList = `card-typeTab type-${card.fields.cardType[0]}`;
+        let tabCopy = document.createElement('p');
+        tabCopy.innerText = card.fields.cardType[0].replace("_", "").toUpperCase();
+        thisTab.appendChild(tabCopy);
+        thisCard.appendChild(thisTab);
         //handle image
         let imagePath;
         if(card.fields.Attachments){
@@ -155,9 +167,8 @@ function publish(object){
         thisImage.setAttribute("src",imagePath);
         thisCard.appendChild(thisImage)
         // //handle header
-        let thisTitle = document.createElement('p');
+        let thisTitle = document.createElement('h1');
         thisTitle.innerText = card.fields.name;
-        thisTitle.classList = "cardTitle";
         thisCard.appendChild(thisTitle) 
         //handle status tag
         let thisTag = document.createElement('p');
@@ -172,21 +183,25 @@ function publish(object){
     });
     // ==================
     // == STORY CARDS == 
+    // ==================
+
     let strContainer = document.getElementById("storiesContainer")
     //clear existing cards
     strContainer.innerHTML = "";
-    dataSet.lf_copy.forEach((card)=>{
-        //console.log(`publishing card ${card.id}`);
-        //create card element
+    //loop through the stories array creating a card for each
+    dataSet.stories.forEach((card)=>{
+        //skip this card if it's not marked for a card
+        if (!card.fields.card) {return};
+        //otherwise create card element
         let idString = card.id
         let idArray = idString.split("_");
         //console.log(idArray)
         //console.table(card.fields);
         let thisCard = document.createElement("div")
         thisCard.id = card.fields.id;
-        thisCard.classList = "card"
+        thisCard.classList = "card card-small"
         thisCard.classList.add(idArray[0]);
-        thisCard.setAttribute("onclick","loadInterview(this.id);");
+        thisCard.setAttribute("onclick","examine(this.id);");
         //handle image
         let imagePath;
         if(card.fields.Attachments){
@@ -202,9 +217,8 @@ function publish(object){
         thisImage.setAttribute("src",imagePath);
         thisCard.appendChild(thisImage)
         // //handle header
-        let thisTitle = document.createElement('p');
-        thisTitle.innerText = card.fields.bigText;
-        thisTitle.classList = "cardTitle";
+        let thisTitle = document.createElement('h1');
+        thisTitle.innerText = card.fields.name;
         thisCard.appendChild(thisTitle) 
         //handle status tag
         let thisTag = document.createElement('p');
@@ -217,11 +231,83 @@ function publish(object){
         //append to container
         strContainer.appendChild(thisCard); 
     });
+
+    // ==================
+    // == PUBLICATION CARDS == 
+    // ==================
+    let pubsContainer = document.getElementById("pubsContainer")
+    //clear existing cards
+    pubsContainer.innerHTML = "";
+    dataSet.publications.forEach(card =>{
+        //console.log(card)
+        //console.log(`publishing: ${card.fields.Name}`)
+        //skip this card if it's not marked for a card
+        //if (!card.fields.card) {return};
+        //otherwise create card element
+        let idString = card.id
+        let idArray = idString.split("_");
+        //console.log(idArray)
+        //create card elelement
+        let thisCard = document.createElement("div")
+         thisCard.id = card.fields.id;
+         thisCard.classList = "card card-small"
+         thisCard.classList.add(idArray[0]);
+         thisCard.setAttribute("onclick","examine(this.id);");
+         //create card type tab
+         let thisTab = document.createElement('div');
+         console.log(card.fields.publication_type[0])
+         thisTab.classList = `card-typeTab type-${card.fields.publication_type[0]}`;
+         let tabCopy = document.createElement('p');
+         tabCopy.innerText = card.fields.publication_type[0].toUpperCase();
+         thisTab.appendChild(tabCopy);
+         thisCard.appendChild(thisTab);
+         //handle image if image attached
+         let imagePath;
+         if(card.fields.Attachments){
+             imagePath = card.fields.Attachments[0].thumbnails.large.url;
+         } else {            
+            imagePath = 'images/ph_book_thumb.jpg'
+         }
+         let thisImage = document.createElement("img");
+         thisImage.classList = "card portrait";
+         thisImage.setAttribute("src",imagePath);
+         thisCard.appendChild(thisImage)
+         // handle card title header
+         
+         let thisTitle = document.createElement('h1');
+         thisTitle.innerText = card.fields.Name;
+         thisCard.appendChild(thisTitle) 
+         //handle status tag
+         let thisTag = document.createElement('p');
+         let theStatus = card.fields.status
+         //console.log(theStatus)
+         thisTag.classList = "tag"
+         thisTag.classList.add(theStatus);
+         thisTag.innerText = theStatus;
+         thisCard.appendChild(thisTag);
+         //append to container
+         pubsContainer.appendChild(thisCard); 
+    })
+
     //update Timestamp on the Update Log
     document.getElementById("updateLog").innerText = dataSet.timeStamp;
 };
 function initEventListeners(){
     console.log("no event listeners to initialise")
+}
+
+function examine(idString){
+    console.log(`looking closer at node: ${idString}`)
+    let thisCard = document.getElementById(idString);
+    thisCard.classList.replace("card-small", "card-focus");
+    goGetSomeCards(idString);
+}
+
+function goGetSomeCards(idString){
+    //here's where you put a http request to the node server 
+    let theClickedCard = data.stories.find(item => item.id === idString);
+    console.log(theClickedCard.fields.arrayOfLinks);
+    
 }
 function loadInterview(idString){
     console.log(`retrieving the right interview data for ${idString}`)
@@ -232,8 +318,7 @@ function loadInterview(idString){
     let toPublish = [];
     arrayOfLinks.forEach((link)=>{
         //console.log(link);
-        let theRightObject = data.lf_copy.find(item=> item.id === link);
-        //console.log(theRightObject);
+        let theRightObject = data.stories.find(item=> item.id === link);
         toPublish.push(theRightObject);
     });
     //console.log(toPublish)
@@ -242,33 +327,59 @@ function loadInterview(idString){
 
 
 }
-
 // Longform functions
 function prepareLongForm(obj){
     console.log(obj);
+    //sort array of objects according to the order that they should appear
+    obj.sort((a,b)=> (a.fields.order>b.fields.order)?1:-1);
+    //set page variable to refer to the content box in the html markup
+    let page = document.getElementById("longRead-content"); 
+    page.classList = 'longRead-content'
+    //loop through the content handling each by the story-type property
     obj.forEach((para) => {
-        let page = document.getElementById("longRead-content"); 
-        page.classList = 'longRead-content'
-        let rawText = para.fields.Copy_rt;
-        let tidyText = tidyMyCopy(rawText)
-        let headLine = para.fields.bigText
-        let pullQuote = para.fields.pullQuote
-        let chunk = document.createElement('div');
-        chunk.classList = "longRead-copy";
-        if (headLine !== "") {
-            let header = document.createElement('p')
-            header.innerText = headLine;
-            header.classList = "longRead-header";
-            page.appendChild(header);
+        console.log(para.fields.story_type);
+        //if the story type is a banner image handle it as an image
+        if(para.fields.story_type[0] === 'img_banner'){
+            let thisBanner = document.createElement('div');
+            thisBanner.classList = "longRead-banner";
+            let thisImage = document.createElement('img');
+            thisImage.alt = para.fields.copy_rt;
+            thisImage.src = para.fields.Attachments[0].url;
+            thisBanner.appendChild(thisImage);
+            let thisTitle = document.createElement('h1');
+            thisTitle.innerText = para.fields.bigText
+            page.appendChild(thisBanner);
+            return;
         }
-        if (pullQuote !== "") {
-            let pull = document.createElement('p')
-            pull.innerText = pullQuote;
-            pull.classList = "longRead-pullQuote";
-            page.appendChild(pull);
+        //if the story type is a spot image handle it as a spot
+        if (para.fields.story_type[0] === "img_spot"){
+            console.log(`handling spot image`);
+            return
         }
-        chunk.innerHTML = tidyText;
-        page.appendChild(chunk);
+        if (para.fields.story_type[0] === "Intrv"){
+            let rawText = para.fields.Copy_rt;
+            let tidyText = tidyMyCopy(rawText);
+            let headLine = para.fields.bigText;
+            let pullQuote = para.fields.pullQuote;
+            let chunk = document.createElement('div');
+            chunk.classList = "longRead-copy";
+            if (headLine) {
+                let header = document.createElement('p')
+                header.innerText = headLine;
+                header.classList = "longRead-header";
+                page.appendChild(header);
+            }
+            if (pullQuote) {
+                console.log(`pull quote is: ${typeof(pullQuote)}`);
+                let pull = document.createElement('p')
+                pull.innerText = pullQuote;
+                pull.classList = "longRead-pullQuote";
+                page.appendChild(pull);
+            }
+            chunk.innerHTML = tidyText;
+            page.appendChild(chunk);
+            return;
+        };    
     });
 
     
