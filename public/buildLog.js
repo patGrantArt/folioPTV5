@@ -17,6 +17,8 @@ let BuildLogObj = [
             "NEW THING: Images in long form article enabled"
             ]    
     },
+
+//FIX BUG: manage UNDEFINED in card loop,LAYOUT: better use of grid layout,NEW CARDS: CSS Make everything smaller and gentler,BACK END: Added publications sheet,NEW THING: Images in long form article enabled
     {
         date: "25-10-22",
         updates: [
