@@ -98,6 +98,9 @@ h1 {
 .grid-col-3 {
     grid-column: span 3;
 }
+.grid-col-4 {
+    grid-column: span 4;
+}
 .grid-row-1 {
     grid-row: span 1;
 }
@@ -206,11 +209,35 @@ h1 {
     grid-column: span 3;
 }
 .card-focus h1 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0% 5% 0% 5%;
+
+}
+.card-focus h2 {
     font-size: 0.6rem;
     font-weight: bold;
     text-align: center;
     padding: 0% 5% 0% 5%;
 
+}
+.card-node-Container {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    width: 90%;
+    height: 1rem;
+    margin: 1rem 5% 0 5%;
+    padding: 0 0 0 0%;
+
+}
+.card-node {
+    background-color: var(--darkBrown);
+    border-radius: 50%;
+    height: 4rem;
+    color: var(--lightestCream);
+    padding: 1rem 0 0 0;
 }
 .portrait {
     width: 100%;

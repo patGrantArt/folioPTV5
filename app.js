@@ -106,7 +106,6 @@ async function updateAndSave(){
 };
 updateAndSave()
 
-
 function sortData(object){
     console.log(`sorting data`);
     let result = new Object;
@@ -123,7 +122,6 @@ function sortData(object){
         result.lf_Cards.push(thisCard);
     });
     //sort entity cards
-    console.log('==========');
     //console.log(object.entcards);
     result.ent_Cards = [];
     object.entcards.forEach(element => {
@@ -141,16 +139,16 @@ function sortData(object){
         let cardID = element.fields.id;
         let thisCard = new Object;
         thisCard.id = cardID;
-        thisCard.fields = element.fields
+        thisCard.fields = element.fields;
         result.stories.push(thisCard);
     });
 
     //sort publications list
     result.publications = [];
-    console.log(`=====================`);
-    console.log(object.publicationcards);
+    
+    //console.log(object.publicationcards);
     let pubsArray = object.publicationcards
-    console.log(pubsArray);
+    //console.log(pubsArray);
     pubsArray.forEach( card => {
         let cardID = card.fields.id;
         let thisCard = new Object;

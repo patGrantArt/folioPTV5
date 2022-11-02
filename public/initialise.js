@@ -3,7 +3,7 @@ console.log(`What up folio`);
 //Global variables accessed by all functions
 let data;
 //pass word disable for devs
-let pwDisable = falsegit ;
+let pwDisable = true ;
 
 
 // higher order function initalises data and display
@@ -144,9 +144,9 @@ function publish(object){
         thisCard.classList.add(idArray[0]);
         thisCard.setAttribute("onclick","loadInterview(this.id);");
         //create card type tab
-        console.table(card.fields);
+        //console.table(card.fields);
         let thisTab = document.createElement('div');
-        console.log(card.fields.cardType[0])
+        //console.log(card.fields.cardType[0])
         thisTab.classList = `card-typeTab type-${card.fields.cardType[0]}`;
         let tabCopy = document.createElement('p');
         tabCopy.innerText = card.fields.cardType[0].replace("_", "").toUpperCase();
@@ -154,13 +154,13 @@ function publish(object){
         thisCard.appendChild(thisTab);
         //handle image
         let imagePath;
+        // is there an image attachment?
         if(card.fields.Attachments){
-            //console.log(`image supplied`)
+            // if so create a path for the one attached
             imagePath = card.fields.Attachments[0].thumbnails.large.url;
-            //console.log(imagePath);
         } else {
-            //console.log(`no image yet bro`)
-            imagePath = 'images/default1.png'
+            //if not use a default image bassed on the card type
+            imagePath = getImagePath(idArray[0]);
         }
         let thisImage = document.createElement("img");
         thisImage.classList = "card portrait";
@@ -202,6 +202,14 @@ function publish(object){
         thisCard.classList = "card card-small"
         thisCard.classList.add(idArray[0]);
         thisCard.setAttribute("onclick","examine(this.id);");
+        //create card type tab
+        let thisTab = document.createElement('div');
+        //console.log(card.fields.publication_type[0])
+        thisTab.classList = `card-typeTab type-${idArray[0]}`;
+        let tabCopy = document.createElement('p');
+        tabCopy.innerText = idArray[0].toUpperCase();
+        thisTab.appendChild(tabCopy);
+        thisCard.appendChild(thisTab);
         //handle image
         let imagePath;
         if(card.fields.Attachments){
@@ -209,8 +217,7 @@ function publish(object){
             imagePath = card.fields.Attachments[0].thumbnails.large.url;
             //console.log(imagePath);
         } else {
-            //console.log(`no image yet bro`)
-            imagePath = 'images/default1.png'
+            imagePath = getImagePath(idArray[0]);
         }
         let thisImage = document.createElement("img");
         thisImage.classList = "card portrait";
@@ -255,7 +262,7 @@ function publish(object){
          thisCard.setAttribute("onclick","examine(this.id);");
          //create card type tab
          let thisTab = document.createElement('div');
-         console.log(card.fields.publication_type[0])
+         //console.log(card.fields.publication_type[0])
          thisTab.classList = `card-typeTab type-${card.fields.publication_type[0]}`;
          let tabCopy = document.createElement('p');
          tabCopy.innerText = card.fields.publication_type[0].toUpperCase();
@@ -266,7 +273,7 @@ function publish(object){
          if(card.fields.Attachments){
              imagePath = card.fields.Attachments[0].thumbnails.large.url;
          } else {            
-            imagePath = 'images/ph_book_thumb.jpg'
+            imagePath = getImagePath(idArray[0]);
          }
          let thisImage = document.createElement("img");
          thisImage.classList = "card portrait";
@@ -292,21 +299,98 @@ function publish(object){
     //update Timestamp on the Update Log
     document.getElementById("updateLog").innerText = dataSet.timeStamp;
 };
+function getImagePath(classString){
+    console.log(`getting a default image path for: ${classString}`);
+    let numberOfImages;
+    let randoPick;
+    switch (classString){
+        case "artist":
+            numberOfImages = 3;
+            randoPick = Math.floor(Math.random()*numberOfImages);
+            return `images/folio_ph_artst${randoPick}.jpg`;
+        case "interview":
+            numberOfImages = 4;
+            randoPick = Math.floor(Math.random()*numberOfImages);
+            return `images/folio_ph_intrv${randoPick}.jpg`;
+        case "institution":
+            return "images/folio_ph_inst.jpg"; 
+         case "artefact":
+            return "images/folio_ph_artefact.jpg"; 
+        case "event":
+            return "images/folio_ph_evnt.jpg"; 
+        case "webComic":
+            return "images/folio_ph_web.jpg"; 
+        case "book":
+            return "images/folio_ph_book.jpg"; 
+        case "anthology":
+            return "images/folio_ph_anth.jpg"; 
+        case "zine":
+            return "images/folio_ph_zine.jpg";
+        case "greatPanel":
+            return "images/folio_ph_panel.jpg";                
+    } 
+}
+
+
+
+//do I need to delete this?
 function initEventListeners(){
     console.log("no event listeners to initialise")
 }
-
 function examine(idString){
     console.log(`looking closer at node: ${idString}`)
     let thisCard = document.getElementById(idString);
-    thisCard.classList.replace("card-small", "card-focus");
-    goGetSomeCards(idString);
+    //check whether the clicked card is already in-focus
+    if (thisCard.classList.contains("card-focus")){
+        //if so return this card to small size
+        thisCard.classList.replace("card-focus", "card-small");
+        let toRemove = thisCard.querySelector("#card-node-Container");
+        thisCard.removeChild(toRemove);
+        return
+    } else {
+        //check to see if there is already a card in focus
+        let lastCard = document.querySelector(".card-focus");
+        console.log(lastCard);
+        if (lastCard){
+            //if so, make it small again
+            let cardToShrink = document.querySelector(".card-focus");
+            let toRemove = cardToShrink.querySelector("#card-node-Container");
+            console.log(toRemove);
+            cardToShrink.removeChild(toRemove);
+            cardToShrink.classList.replace("card-focus", "card-small")
+        };
+        //then bring the new clicked card into focus
+        thisCard.classList.replace("card-small", "card-focus");
+    }
+    let cardCollection = goGetSomeCards(idString);
+    //create a container for the nodes
+    let nodeContainer = document.createElement("div");
+    nodeContainer.id = "card-node-Container";
+    nodeContainer.classList = "card-node-Container";
+    //create 'related' title
+    let titleBox = document.createElement("div");
+    titleBox.classList = "grid-col-4";
+    let thisCopy = document.createElement('h1');
+    thisCopy.innerText = "Related:"
+    titleBox.appendChild(thisCopy);
+    nodeContainer.appendChild(titleBox);
+    //create a node for each link
+    cardCollection.forEach(card => {
+        let node = document.createElement('div');
+        node.classList = "card card-node";
+        let thisTitle = document.createElement('h2');
+        thisTitle.innerText = card;
+        node.appendChild(thisTitle);
+        nodeContainer.appendChild(node);
+    });
+    thisCard.appendChild(nodeContainer);
 }
-
 function goGetSomeCards(idString){
     //here's where you put a http request to the node server 
     let theClickedCard = data.stories.find(item => item.id === idString);
-    console.log(theClickedCard.fields.arrayOfLinks);
+    //assemble all it ids for the linked cards and concatenate them
+    let result = theClickedCard.fields.id_array_ent.concat(theClickedCard.fields.id_array_pub);
+    return result;
     
 }
 function loadInterview(idString){
@@ -418,3 +502,4 @@ function tidyMyCopy(longString){
 function test(string){
     console.log("button clicked");
 }
+
