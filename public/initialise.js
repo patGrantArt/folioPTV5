@@ -3,7 +3,7 @@ console.log(`What up folio`);
 //Global variables accessed by all functions
 let data;
 //pass word disable for devs
-let pwDisable = false ;
+let pwDisable = true ;
 
 
 // higher order function initalises data and display
@@ -413,38 +413,40 @@ function loadInterview(idString){
 }
 // Longform functions
 function prepareLongForm(obj){
+    console.log(`==================`)
     console.log(obj);
-    //sort array of objects according to the order that they should appear
-    obj.sort((a,b)=> (a.fields.order>b.fields.order)?1:-1);
-    //set page variable to refer to the content box in the html markup
+    //then set page variable to refer to the content box in the html markup
     let page = document.getElementById("longRead-content"); 
     page.classList = 'longRead-content'
-    //loop through the content handling each by the story-type property
-    obj.forEach((para) => {
-        console.log(para.fields.story_type);
+    //sort array of content objects according to the order that they should appear
+    obj.sort((a,b)=> (a.fields.order>b.fields.order)?1:-1);
+    //loop through the content handling each by the story-type in the id string
+    obj.forEach((element) => {  
+        let idArray = element.id.split("_");
+        let contentType = idArray[0];
         //if the story type is a banner image handle it as an image
-        if(para.fields.story_type[0] === 'img_banner'){
+        if(contentType === 'imgBanner'){
             let thisBanner = document.createElement('div');
             thisBanner.classList = "longRead-banner";
             let thisImage = document.createElement('img');
-            thisImage.alt = para.fields.copy_rt;
-            thisImage.src = para.fields.Attachments[0].url;
+            thisImage.alt = element.fields.copy_rt;
+            thisImage.src = element.fields.Attachments[0].url;
             thisBanner.appendChild(thisImage);
             let thisTitle = document.createElement('h1');
-            thisTitle.innerText = para.fields.bigText
+            thisTitle.innerText = element.fields.bigText
             page.appendChild(thisBanner);
             return;
         }
         //if the story type is a spot image handle it as a spot
-        if (para.fields.story_type[0] === "img_spot"){
+        if (contentType === "img_spot"){
             console.log(`handling spot image`);
             return
         }
-        if (para.fields.story_type[0] === "Intrv"){
-            let rawText = para.fields.Copy_rt;
+        if (contentType === "interview"){
+            let rawText = element.fields.Copy_rt;
             let tidyText = tidyMyCopy(rawText);
-            let headLine = para.fields.bigText;
-            let pullQuote = para.fields.pullQuote;
+            let headLine = element.fields.bigText;
+            let pullQuote = element.fields.pullQuote;
             let chunk = document.createElement('div');
             chunk.classList = "longRead-copy";
             if (headLine) {
