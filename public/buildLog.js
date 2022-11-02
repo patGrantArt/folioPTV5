@@ -1,12 +1,12 @@
 let BuildLogObj = [
-    // {
-    //     date: "UNDEPLOYED",
-    //     updates: [
-    //         "TO DO: refactor code in long form module.",
-
-    //         "TO DO: create 'examine' funtionality"
-    //         ]    
-    // },
+    {
+        date: "2-11-22",
+        updates: [
+            "NEW PICS: Added basic placeholder image",
+            "UI: create basic 'examine' funtionality",
+            "LINKS: Basic expression of 'associations' for cards"
+            ]    
+    },
     {
         date: "28-10-22",
         updates: [
