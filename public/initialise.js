@@ -330,9 +330,6 @@ function getImagePath(classString){
             return "images/folio_ph_panel.jpg";                
     } 
 }
-
-
-
 //do I need to delete this?
 function initEventListeners(){
     console.log("no event listeners to initialise")
@@ -422,6 +419,7 @@ function prepareLongForm(obj){
     obj.sort((a,b)=> (a.fields.order>b.fields.order)?1:-1);
     //loop through the content handling each by the story-type in the id string
     obj.forEach((element) => {  
+        //console.log(`working on ${element.id}`)
         let idArray = element.id.split("_");
         let contentType = idArray[0];
         //if the story type is a banner image handle it as an image
@@ -429,9 +427,21 @@ function prepareLongForm(obj){
             let thisBanner = document.createElement('div');
             thisBanner.classList = "longRead-banner";
             let thisImage = document.createElement('img');
-            thisImage.alt = element.fields.copy_rt;
-            thisImage.src = element.fields.Attachments[0].url;
-            thisBanner.appendChild(thisImage);
+            console.table(element.fields);
+            thisImage.alt = element.fields.image_alt;
+            console.log(element.fields);
+            if (!element.fields.Attachments){
+                console.log("no image");
+                thisImage.src = "images/placeholder_ls.jpg";
+                let thisLabel = document.createElement("p");
+                thisLabel.innerText = element.fields.image_alt;
+                thisBanner.appendChild(thisImage);
+                thisBanner.appendChild(thisLabel)
+                
+            } else {
+                thisImage.src = element.fields.Attachments[0].url;
+                thisBanner.appendChild(thisImage);
+            }
             let thisTitle = document.createElement('h1');
             thisTitle.innerText = element.fields.bigText
             page.appendChild(thisBanner);
@@ -483,11 +493,9 @@ function closeLongForm(){
     page.innerHTML = '';
 }
 // Password Functions
-
-
 //this function parses Airtables variation on the Markdown language - Based on Randolph Perkins' medium post
 function tidyMyCopy(longString){
-    console.log(`tidying the copy - Parsing markdown to html`);
+    //console.log(`tidying the copy - Parsing markdown to html`);
     const toHTML = longString
 		.replace(/^### (.*$)/gim, '<h3>$1</h3>') // h3 tag
 		.replace(/^## (.*$)/gim, '<h2>$1</h2>') // h2 tag
@@ -499,7 +507,6 @@ function tidyMyCopy(longString){
 
     
 }
-
 //
 function test(string){
     console.log("button clicked");
