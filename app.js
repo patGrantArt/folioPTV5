@@ -136,6 +136,9 @@ function sortData(object){
     result.stories = [];
     stintArray = object.storycards;
     stintArray.forEach(element => {
+        if(!element.fields.id){
+            console.log(element)
+        };
         let cardID = element.fields.id;
         let thisCard = new Object;
         thisCard.id = cardID;

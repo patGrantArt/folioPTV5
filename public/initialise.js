@@ -3,7 +3,7 @@ console.log(`What up folio`);
 //Global variables accessed by all functions
 let data;
 //pass word disable for devs
-let pwDisable = true ;
+let pwDisable = false;
 
 
 // higher order function initalises data and display
@@ -54,7 +54,6 @@ function pwAuthenticate(){
     }
 
 };    
-
 async function getData(instruction){
     console.log(`==== getData() is called with "${instruction}" argument`)
     let route = "/"+instruction;
@@ -96,7 +95,7 @@ function publish(object){
         thisCard.classList = "card"
         thisCard.classList.add(idArray[0]);
         thisCard.classList.add("card-med");
-        thisCard.setAttribute("onclick","loadInterview(this.id);");
+        thisCard.setAttribute("onclick", "loadInterview(this.id);");
         //handle image
         let imagePath;
         if(card.fields.Attachments){
@@ -235,6 +234,14 @@ function publish(object){
         thisTag.classList.add(theStatus);
         thisTag.innerText = theStatus;
         thisCard.appendChild(thisTag);
+        //handle buttons
+        let readMoreButton = document.createElement("div");
+        readMoreButton.classList = "card-button";
+        readMoreButton.id = `childOf-${idString}`;
+        readMoreButton.setAttribute("onclick", "loadInterview(this.id);");
+        readMoreButton.innerText = `READ MORE...`;
+        thisCard.appendChild(readMoreButton);
+
         //append to container
         strContainer.appendChild(thisCard); 
     });
@@ -300,7 +307,7 @@ function publish(object){
     document.getElementById("updateLog").innerText = dataSet.timeStamp;
 };
 function getImagePath(classString){
-    console.log(`getting a default image path for: ${classString}`);
+    //console.log(`getting a default image path for: ${classString}`);
     let numberOfImages;
     let randoPick;
     switch (classString){
@@ -391,11 +398,32 @@ function goGetSomeCards(idString){
     
 }
 function loadInterview(idString){
+    console.log(`=================`)
     console.log(`retrieving the right interview data for ${idString}`)
-    //console.log(idString);
-    let theRightCard = data.lf_Cards.find(item => item.id === idString);
-    //console.log(theRightCard);
-    let arrayOfLinks = theRightCard.fields.copyLinks;
+    
+    let theRightCard;
+    let arrayOfLinks;
+    if (idString.includes("longFormCard")){
+        console.log(`long form card clicked`);
+        console.log(idString);
+        theRightCard = data.lf_Cards.find(item => item.id === idString);
+        arrayOfLinks = theRightCard.fields.copyLinks;
+    } else {
+        console.log(`other card clicked`);
+        idArray= idString.split("-")
+        idString = idArray[1]
+        theRightCard = data.lf_Cards.filter(item => {
+            console.log()
+            // if there are links
+            if (item.fields.copyLinks){
+                //then filter out the ones that don't contain our id
+                return item.fields.copyLinks.includes(idString)? true : false;
+            };              
+        });
+        arrayOfLinks = theRightCard[0].fields.copyLinks;   
+    }
+    console.log(theRightCard);
+    
     let toPublish = [];
     arrayOfLinks.forEach((link)=>{
         //console.log(link);
@@ -405,12 +433,10 @@ function loadInterview(idString){
     //console.log(toPublish)
     prepareLongForm(toPublish)
     openLongForm();
-
-
+    scrollToStory(idString)
 }
 // Longform functions
-function prepareLongForm(obj){
-    console.log(`==================`)
+function prepareLongForm(obj){    
     console.log(obj);
     //then set page variable to refer to the content box in the html markup
     let page = document.getElementById("longRead-content"); 
@@ -418,7 +444,15 @@ function prepareLongForm(obj){
     //sort array of content objects according to the order that they should appear
     obj.sort((a,b)=> (a.fields.order>b.fields.order)?1:-1);
     //loop through the content handling each by the story-type in the id string
+    
     obj.forEach((element) => {  
+        let idTag = document.createElement("div");
+        idTag.classList = "longRead-IDtag"
+        idTag.id = `anchor_${element.id}`;
+        let idCopy = document.createElement("p");
+        idCopy.innerText = `story id is ${element.id}`
+        idTag.appendChild(idCopy);
+        page.appendChild(idTag);
         //console.log(`working on ${element.id}`)
         let idArray = element.id.split("_");
         let contentType = idArray[0];
@@ -427,11 +461,11 @@ function prepareLongForm(obj){
             let thisBanner = document.createElement('div');
             thisBanner.classList = "longRead-banner";
             let thisImage = document.createElement('img');
-            console.table(element.fields);
+            //console.table(element.fields);
             thisImage.alt = element.fields.image_alt;
-            console.log(element.fields);
+            //console.log(element.fields);
             if (!element.fields.Attachments){
-                console.log("no image");
+            //    console.log("no image");
                 thisImage.src = "images/placeholder_ls.jpg";
                 let thisLabel = document.createElement("p");
                 thisLabel.innerText = element.fields.image_alt;
@@ -447,11 +481,6 @@ function prepareLongForm(obj){
             page.appendChild(thisBanner);
             return;
         }
-        //if the story type is a spot image handle it as a spot
-        if (contentType === "img_spot"){
-            console.log(`handling spot image`);
-            return
-        }
         if (contentType === "interview"){
             let rawText = element.fields.Copy_rt;
             let tidyText = tidyMyCopy(rawText);
@@ -465,17 +494,98 @@ function prepareLongForm(obj){
                 header.classList = "longRead-header";
                 page.appendChild(header);
             }
+
+            let thisImage = document.createElement('img');
+            thisImage.alt = element.fields.image_alt;
+            if (element.fields.Attachments){
+                thisImage.src = element.fields.Attachments[0].url;                
+            }
+            if (!element.fields.Attachments){
+                thisImage.src = "images/placeholder_ls.jpg";
+            }
+            page.appendChild(thisImage);
+            //label for the image    
+            let thisLabel = document.createElement("p");
+            thisLabel.classList = "longRead-imgLabel";
+            if (element.fields.image_alt){
+                    thisLabel.innerText = element.fields.image_alt;
+            } else {
+                    thisLabel.innerText = "PLACEHOLDER: We don't yet have an image to illustrate this story";
+            }
+            page.appendChild(thisLabel) 
+            
             if (pullQuote) {
-                console.log(`pull quote is: ${typeof(pullQuote)}`);
                 let pull = document.createElement('p')
                 pull.innerText = pullQuote;
                 pull.classList = "longRead-pullQuote";
                 page.appendChild(pull);
-            }
+            } 
+            
             chunk.innerHTML = tidyText;
             page.appendChild(chunk);
             return;
-        };    
+        };
+        if (contentType === "imgSpot"){
+            console.log(`handling spot image with the id: ${element.id}`);
+            let identifier = `spot${idArray[1]}`;
+            let spotPlace = document.getElementById(identifier);
+            spotPlace.classList = "lf_spotImg"
+            let thisImage = document.createElement('img');
+            thisImage.alt = element.fields.image_alt;
+            if (!element.fields.Attachments){
+                //console.log("no image");
+                thisImage.src = "images/placeholder_ls.jpg";
+                let thisLabel = document.createElement("p");
+                thisLabel.classList = "longRead-imgLabel";
+                thisLabel.innerText = `SPOT ILLUSTRATION: ${element.fields.image_alt}`;
+                spotPlace.appendChild(thisImage);
+                spotPlace.appendChild(thisLabel)
+                
+            } else {
+                thisImage.src = element.fields.Attachments[0].url;
+                spotPlace.appendChild(thisImage);
+            }
+            return
+        }
+        if (contentType === "videoClip"){
+            let identifier = `${idArray[0]}${idArray[1]}`;
+            let spotPlace = document.getElementById(identifier);
+            spotPlace.classList = "longRead-videoClip"
+            let thisImage = document.createElement('img');
+            thisImage.alt = element.fields.image_alt;
+            if (!element.fields.Attachments){
+                console.log("no video");
+                thisImage.src = "images/placeholder_ls2.jpg";
+                let thisLabel = document.createElement("p");
+                thisLabel.classList = "longRead-imgLabel";
+                thisLabel.innerText = `VIDEO CLIP OR GIF: ${element.fields.image_alt}`;
+                spotPlace.appendChild(thisImage);
+                spotPlace.appendChild(thisLabel)
+                
+            } else {
+                thisImage.src = element.fields.Attachments[0].url;
+                spotPlace.appendChild(thisImage);
+            }
+        }
+        if (contentType === "carousel"){
+            console.log(`handling carousel with the id ${element.id}`)
+            let identifier = `${idArray[0]}${idArray[1]}`;
+            let thisPlace = document.getElementById(identifier);
+            thisPlace.classList = "longRead-carousel"
+            console.table(element.fields.Attachments);
+            element.fields.Attachments.forEach(img=>{
+                console.table(img);
+                let thisPic = document.createElement('img')
+                thisPic.src = img.url
+                thisPic.alt = element.fields.alt;
+                thisPlace.appendChild(thisPic);
+            })
+            return
+
+        }
+        // console.log(`==================`);
+        // console.table(element.fields);
+            
     });
 
     
@@ -485,6 +595,10 @@ function openLongForm(){
     modal = document.getElementById("longRead-modal");
     modal.classList.replace('noShow', 'show');
 }
+function scrollToStory(idString){
+    let anchor = document.getElementById(`anchor_${idString}`);
+    anchor.scrollIntoView('true');
+}
 function closeLongForm(){
     console.log(`opening Reader`)
     modal = document.getElementById("longRead-modal");
@@ -492,6 +606,7 @@ function closeLongForm(){
     let page = document.getElementById("longRead-content"); 
     page.innerHTML = '';
 }
+
 // Password Functions
 //this function parses Airtables variation on the Markdown language - Based on Randolph Perkins' medium post
 function tidyMyCopy(longString){
@@ -503,12 +618,8 @@ function tidyMyCopy(longString){
 		.replace(/\*\*(.*)\*\*/gim, '<b>$1</b>') // bold text
 		.replace(/\_(.{1,100})\_/gim, '<i>$1</i>') // italic text
         .replace(/(.*)\n\n/gim, '<p>$1</p>') //separate into pragraphs
-	return toHTML.trim(); // using trim method to remove whitespace
-
-    
+	return toHTML.trim(); // using trim method to remove whitespace    
 }
 //
-function test(string){
-    console.log("button clicked");
-}
+
 

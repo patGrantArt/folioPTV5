@@ -7,6 +7,7 @@
     --lightRed: rgb(250, 174, 147);
     --medRed: rgb(245, 150, 115);
     --darkRed: rgb(198, 53, 0);
+    --darkGrey: rgb(133, 112, 103);
     --lightGrey: rgb(179, 158, 150);
     --lighterGrey: rgb(224, 195, 183);
     --cream:  rgb(252, 239, 184);
@@ -252,11 +253,22 @@ h1 {
     width: fit-content;
     padding: 2px 9px 2px 9px;
     border-radius: 6px;
-    margin: 5px;
-    
+    margin: 5px;    
 }
 .Stub {
 
+}
+.card-button {
+    background-color: var(--darkBrown);
+    color: var(--cream);
+    font-size: 0.6rem;
+    width: fit-content;
+    padding: 2px 9px 2px 9px;
+    border-radius: 6px;
+    margin: 5px; 
+}
+.card-button:hover {
+    opacity: 0.7;
 }
 .card-typeTab{
     height: 1.3rem;

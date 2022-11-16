@@ -94,9 +94,10 @@
     font-size: 16px;
     text-align: justify;
     line-height: 22px;
+    margin: 0 0 100px 0;
 }
 .longRead-copy p {
-    margin: 0 0 15px 0;
+    margin: 0 0 30px 0;
 }
 .longRead-header {
     font-size: 25px;
@@ -110,7 +111,41 @@
     font-size: 23px;
     border-radius: 50px;
 }
-
+.longRead-imgLabel {
+    margin: 0.5rem 0 3rem 0;
+    font-size: 0.8rem;
+    color: var(--lightGrey);
+}
+.longRead-spotImg {
+    background-color: greenyellow;
+}
+.longRead-spotImg img {
+    background-color: red;
+}
+.longRead-videoClip {
+    width: 164%;
+    position: relative;
+    left: -43%;
+}
+.longRead-carousel {
+    width: 100%;
+    min-height: 200px;
+}
+.longRead-carousel img {
+    width: 25%;
+}
+.longRead-IDtag {
+    background-color: var(--lighterGrey);
+    color: var(--darkGrey);
+    width: fit-content;
+    border-radius: 10px;
+    font-size: 0.6rem;
+    font-weight: bold;
+}
+.longRead-IDtag p {
+    padding: 5px 15px 5px 15px;
+    
+}
 
 
 

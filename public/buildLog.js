@@ -1,5 +1,20 @@
 let BuildLogObj = [
     {
+        date: "16-11-22",
+        updates: [
+            "NEW: READ MORE button on story cards clicks-through directly to story",
+            "TAGS: unique story ID on show in long form view (a bit buggy)",
+            "RICH CONTENT: New Story types in Airtable for spot / video / slideshow"
+            ]    
+    },
+    {
+        date: "9-11-22",
+        updates: [
+            "TWEAKED: Longform Publisher algo",
+            "NEW CONTENT: Gavin Than Interview is up "
+            ]    
+    },
+    {
         date: "2-11-22",
         updates: [
             "NEW PICS: Added basic placeholder image",
