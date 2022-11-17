@@ -3,7 +3,7 @@ console.log(`What up folio`);
 //Global variables accessed by all functions
 let data;
 //pass word disable for devs
-let pwDisable = false;
+let pwDisable = true;
 
 
 // higher order function initalises data and display
@@ -398,22 +398,20 @@ function goGetSomeCards(idString){
     
 }
 function loadInterview(idString){
-    console.log(`=================`)
-    console.log(`retrieving the right interview data for ${idString}`)
+    //console.log(`retrieving the right interview data for ${idString}`)
     
     let theRightCard;
     let arrayOfLinks;
     if (idString.includes("longFormCard")){
-        console.log(`long form card clicked`);
-        console.log(idString);
+        //console.log(`long form card clicked`);
+        //console.log(idString);
         theRightCard = data.lf_Cards.find(item => item.id === idString);
         arrayOfLinks = theRightCard.fields.copyLinks;
     } else {
-        console.log(`other card clicked`);
+        //console.log(`other card clicked`);
         idArray= idString.split("-")
         idString = idArray[1]
         theRightCard = data.lf_Cards.filter(item => {
-            console.log()
             // if there are links
             if (item.fields.copyLinks){
                 //then filter out the ones that don't contain our id
@@ -422,8 +420,8 @@ function loadInterview(idString){
         });
         arrayOfLinks = theRightCard[0].fields.copyLinks;   
     }
-    console.log(theRightCard);
-    
+    //console.log(theRightCard);
+
     let toPublish = [];
     arrayOfLinks.forEach((link)=>{
         //console.log(link);
@@ -437,25 +435,27 @@ function loadInterview(idString){
 }
 // Longform functions
 function prepareLongForm(obj){    
-    console.log(obj);
+    //console.log(obj);
     //then set page variable to refer to the content box in the html markup
     let page = document.getElementById("longRead-content"); 
     page.classList = 'longRead-content'
     //sort array of content objects according to the order that they should appear
     obj.sort((a,b)=> (a.fields.order>b.fields.order)?1:-1);
-    //loop through the content handling each by the story-type in the id string
     
-    obj.forEach((element) => {  
+    //loop through the content handling each by the story-type in the id string
+    obj.forEach((element) => {
+        //console.log(`preparing chunk: ${element.id}`)
+        let idArray = element.id.split("_");
+        let contentType = idArray[0];
+         
+        //create ID tags
         let idTag = document.createElement("div");
         idTag.classList = "longRead-IDtag"
         idTag.id = `anchor_${element.id}`;
         let idCopy = document.createElement("p");
-        idCopy.innerText = `story id is ${element.id}`
+        idCopy.innerText = `story id is ${element.id}`;
         idTag.appendChild(idCopy);
-        page.appendChild(idTag);
-        //console.log(`working on ${element.id}`)
-        let idArray = element.id.split("_");
-        let contentType = idArray[0];
+        
         //if the story type is a banner image handle it as an image
         if(contentType === 'imgBanner'){
             let thisBanner = document.createElement('div');
@@ -478,10 +478,12 @@ function prepareLongForm(obj){
             }
             let thisTitle = document.createElement('h1');
             thisTitle.innerText = element.fields.bigText
+            page.appendChild(idTag)
             page.appendChild(thisBanner);
             return;
         }
         if (contentType === "interview"){
+            page.appendChild(idTag);
             let rawText = element.fields.Copy_rt;
             let tidyText = tidyMyCopy(rawText);
             let headLine = element.fields.bigText;
@@ -526,9 +528,12 @@ function prepareLongForm(obj){
             return;
         };
         if (contentType === "imgSpot"){
-            console.log(`handling spot image with the id: ${element.id}`);
-            let identifier = `spot${idArray[1]}`;
+            //console.log(`handling spot image with the id: ${element.id}`);
+            let identifier = `${idArray[0]}${idArray[1]}`;
+            //console.log(identifier)
             let spotPlace = document.getElementById(identifier);
+            spotPlace.appendChild(idTag)
+            //console.log(spotPlace);
             spotPlace.classList = "lf_spotImg"
             let thisImage = document.createElement('img');
             thisImage.alt = element.fields.image_alt;
@@ -551,10 +556,11 @@ function prepareLongForm(obj){
             let identifier = `${idArray[0]}${idArray[1]}`;
             let spotPlace = document.getElementById(identifier);
             spotPlace.classList = "longRead-videoClip"
+            spotPlace.appendChild(idTag)
             let thisImage = document.createElement('img');
             thisImage.alt = element.fields.image_alt;
             if (!element.fields.Attachments){
-                console.log("no video");
+                //console.log("no video");
                 thisImage.src = "images/placeholder_ls2.jpg";
                 let thisLabel = document.createElement("p");
                 thisLabel.classList = "longRead-imgLabel";
@@ -568,13 +574,14 @@ function prepareLongForm(obj){
             }
         }
         if (contentType === "carousel"){
-            console.log(`handling carousel with the id ${element.id}`)
+            //console.log(`handling carousel with the id ${element.id}`)
             let identifier = `${idArray[0]}${idArray[1]}`;
             let thisPlace = document.getElementById(identifier);
             thisPlace.classList = "longRead-carousel"
-            console.table(element.fields.Attachments);
+            thisPlace.appendChild(idTag)
+            //console.table(element.fields.Attachments);
             element.fields.Attachments.forEach(img=>{
-                console.table(img);
+                //console.table(img);
                 let thisPic = document.createElement('img')
                 thisPic.src = img.url
                 thisPic.alt = element.fields.alt;
@@ -583,9 +590,23 @@ function prepareLongForm(obj){
             return
 
         }
-        // console.log(`==================`);
-        // console.table(element.fields);
-            
+        if (contentType === "pullQuote"){
+            //console.log(`handling pull quote with the id ${element.id}`)
+            let identifier = `${idArray[0]}${idArray[1]}`;
+            let thisPlace = document.getElementById(identifier);
+            thisPlace.appendChild(idTag)
+            thisPlace.classList = "longRead-pullQuote"
+            //console.table(element.fields);
+            let thisPara = document.createElement("p");
+            thisPara.innerText = `"${element.fields.pullQuote}"`;
+            thisPara.classList = "longRead-pullQuote-copy"
+            let thisLabel = document.createElement("p");
+            thisLabel.innerText = `${element.fields.storyBy} on ${element.fields.bigText}`;
+            thisLabel.classList = "longRead-pullQuote-label";
+            thisPlace.appendChild(thisPara); 
+            thisPlace.appendChild(thisLabel); 
+            return
+        }           
     });
 
     

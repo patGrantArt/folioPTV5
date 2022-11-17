@@ -105,12 +105,26 @@
 }
 .longRead-pullQuote {
     background-color: rgb(206 186 186);
-    width: 72%;
-    margin: 50px auto 50px auto;
-    padding: 10%;
-    font-size: 23px;
+    width: 40%;
+    margin: 10px 0px 10px 39px;
+    padding: 4%;
+    font-size: 16px;
     border-radius: 50px;
+    line-height: 2vw;
+    float: right;
 }
+.longRead-pullQuote-copy {
+    font-style: italic;
+    font-weight: bold;
+    color: var(--darkGrey);
+    margin: 0.5rem 0 1rem 0;
+}
+.longRead-pullQuote-label {  
+    font-size: 1rem;
+    color: var(--darkGrey);
+    margin: 0.5rem 0 1rem 0;
+}
+
 .longRead-imgLabel {
     margin: 0.5rem 0 3rem 0;
     font-size: 0.8rem;
