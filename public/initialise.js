@@ -3,7 +3,7 @@ console.log(`What up folio`);
 //Global variables accessed by all functions
 let data;
 //pass word disable for devs
-let pwDisable = false;
+let pwDisable = true;
 
 
 // higher order function initalises data and display

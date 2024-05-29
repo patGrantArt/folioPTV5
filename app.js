@@ -30,7 +30,7 @@ const dataFilePath = homeDirectory+"/public/data.json";
 //AIRTABLE CONFIG - hides private airtable api keys (env)
 const Airtable = require('airtable')
 const { all } = require('express/lib/application')
-require('dotenv').config()
+require('dotenv').config();
 const KEY = process.env.PRIVATE_KEY
 const BASE_ID = process.env.AIRTABLEBASE
 const base = new Airtable({apiKey: KEY}).base(BASE_ID)
